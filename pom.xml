@@ -3,4 +3,21 @@
   <groupId>com.goszjacek</groupId>
   <artifactId>elevators-control-system</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+     <maven.compiler.release>13</maven.compiler.release>
+  </properties>
+  <dependencies>
+    <dependency>
+	    <groupId>org.xerial</groupId>
+	    <artifactId>sqlite-jdbc</artifactId>
+	    <version>3.28.0</version>
+    </dependency>
+    <dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>1.18.12</version>
+		<scope>provided</scope>
+	</dependency>
+  </dependencies>
 </project>
