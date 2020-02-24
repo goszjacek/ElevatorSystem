@@ -46,13 +46,13 @@ public class Elevator implements IElevator{
 
 	@Override
 	public void step() {
-		if(state == State.WAITING) {
-			if(!targets.isEmpty()) {
-				presentTarget = targets.poll();
-				state = State.MOVING;
-			}
-		}
-		//moving
+		setTarget();
+		moveAndCheck();
+		
+		
+	}
+
+	private void moveAndCheck() {
 		if(state == State.MOVING) {
 			if(presentTarget > presentFloor)
 				presentFloor += 1;
@@ -62,9 +62,18 @@ public class Elevator implements IElevator{
 			if(presentTarget == presentFloor)
 				state = State.WAITING;
 		}
-		
-		
 	}
+
+	private void setTarget() {
+		if(state == State.WAITING) {
+			if(!targets.isEmpty()) {
+				presentTarget = targets.poll();
+				state = State.MOVING;
+			}
+		}
+	}
+	
+	
 	
 	
 	

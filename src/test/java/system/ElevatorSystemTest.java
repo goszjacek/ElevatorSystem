@@ -23,20 +23,21 @@ class ElevatorSystemTest {
 		es.pickUp(2);
 		es.step();
 		es.step();
-		assertEquals(es.getPresentFloor(),2);
+		assertEquals(2, es.getPresentFloor());
 		es.pickUp(1);
 		es.step();
 		es.step();
-		assertEquals(es.getPresentFloor(), 1);
+		assertEquals(1, es.getPresentFloor());
 		es.pickUp(2);
 		es.pickUp(0);
 		es.step();
-		assertEquals(es.getPresentFloor(),2);
+		assertEquals(2, es.getPresentFloor());
 		es.step();
 		es.step();
-		assertEquals(es.getPresentFloor(), 0);
+		assertEquals(0, es.getPresentFloor());
 		es.step();
-		assertEquals(es.getPresentFloor(), 0);
+		assertEquals(0, es.getPresentFloor());
 	}
 
+	
 }
