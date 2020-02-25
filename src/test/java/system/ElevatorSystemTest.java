@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -38,7 +37,7 @@ class ElevatorSystemTest {
 	void testWrongFloor() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			IElevatorSystem es = new ElevatorSystem(2);
-			es.outerPickUp(3);
+			es.outerPickUp(3,false);
 		});
 	}
 	

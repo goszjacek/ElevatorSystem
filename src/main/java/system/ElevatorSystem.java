@@ -140,20 +140,6 @@ public class ElevatorSystem implements IElevatorSystem {
 	}
 	
 	
-	private IElevator getLeastOccupied() {
-		if(elevators.size() == 1)
-			return elevators.get(0);
-		else {
-			IElevator minElevator = elevators.get(0);
-			for(IElevator e : elevators) {
-				if(e.getOccupation() < minElevator.getOccupation()) {
-					minElevator = e;
-				}
-			}
-			return minElevator;	
-		}
-	}
-
 	@Override
 	public void step() {
 		elevators.forEach((e) -> e.step());
