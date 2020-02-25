@@ -49,6 +49,13 @@ public class ElevatorSystem implements IElevatorSystem {
 		getLeastOccupied().addTarget(floor);
 	}
 
+	
+
+	private boolean anyGoingUpLowerThen(int floor) {
+		
+		return false;
+	}
+
 	@Override
 	public void innerPickUp(int elevatorId, int floor) {
 		validateId(elevatorId);
@@ -61,6 +68,11 @@ public class ElevatorSystem implements IElevatorSystem {
 		if(elevatorId < 0 || elevatorId > elevators.size())
 			throw new IllegalArgumentException("Elevator id needs to be between 0 and " + (elevators.size()-1));
 		
+	}
+	
+	private void validateFloor(int floor) {
+		if(floor<0 || floor > this.maxFloor)
+			 throw new IllegalArgumentException("Floor needs to be in range [" + 0 + ", " + this.maxFloor + "]");		
 	}
 
 	private IElevator getLeastOccupied() {
