@@ -38,10 +38,13 @@ public class Elevator implements IElevator{
 	
 	@Override
 	public void addTarget(int floor) {
+		validateFloor(floor);		
+		targets.add(floor);		
+	}
+
+	private void validateFloor(int floor) {
 		if(floor<0 || floor > this.maxFloor)
 			throw new IllegalArgumentException("Floor needs to be in range [" + this.minFloor + ", " + this.maxFloor + "]");
-		
-		targets.add(floor);		
 	}
 
 	@Override
@@ -71,6 +74,11 @@ public class Elevator implements IElevator{
 				state = State.MOVING;
 			}
 		}
+	}
+
+	@Override
+	public int getOccupation() {
+		return targets.size();		
 	}
 	
 	
