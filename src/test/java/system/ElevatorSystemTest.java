@@ -136,8 +136,19 @@ class ElevatorSystemTest {
 	}
 	
 	/**
-	 * Test with many elevators. Collect while moving. 
+	 * Test one elevator. Collect while moving. 
 	 */
 	
+	@Test
+	void testColectWhileMovingOneElevator() {
+		IElevatorSystem es = new ElevatorSystem(5,2);
+		es.outerPickUp(3, true);
+		es.outerPickUp(4, true);
+		es.step();
+		assertIterableEquals(Arrays.asList(1,0), es.elevatorsLocations());
+		es.outerPickUp(2, true);
+		es.step();
+		assertIterableEquals(Arrays.asList(2,0), es.elevatorsLocations());
+	}
 	
 }
