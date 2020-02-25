@@ -2,8 +2,10 @@ package system;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import elevator.Elevator;
+import elevator.ElevatorState;
 import elevator.IElevator;
 
 public class ElevatorSystem implements IElevatorSystem {
@@ -44,25 +46,100 @@ public class ElevatorSystem implements IElevatorSystem {
 	}
 	
 
-	@Override
+
+	
+
 	public void outerPickUp(int floor, boolean up) {
-		getLeastOccupied().addTarget(floor);
+		validateFloor(floor);
+		validateFirstOrLast(floor,up);
+		
+		boolean served = false;
+		if(up) {
+			Optional<IElevator> optionalMovingUp = anyMovingUpBelow(floor);
+			if(optionalMovingUp.isPresent()) {
+				optionalMovingUp.get().addToUps(floor);
+				served = true;
+			}
+		}else {
+			Optional<IElevator> optionalMovingDown = anyMovingDownAbove(floor);
+			if(optionalMovingDown.isPresent()) {
+				optionalMovingDown.get().addToDowns(floor);
+				served = true;
+			}
+			
+		}
+		if(!served) {
+			Optional<IElevator> optionalWaiting = optionalWaiting();
+			if(optionalWaiting.isPresent()) {
+				IElevator chosen = optionalWaiting.get();
+				if(up) 
+					chosen.addToUps(floor);			
+				else 
+					chosen.addToDowns(floor);
+				if(floor > chosen.getPresentFloor())
+					chosen.setState(ElevatorState.MOVING_UP);
+				else
+					chosen.setState(ElevatorState.MOVING_DOWN);
+						
+					
+			}else {
+				Optional<IElevator> leastOccupied = leastOccupied();
+				if(leastOccupied.isEmpty())
+					throw new RuntimeException("No Elevators available!!!");
+				else
+					if(up)
+						leastOccupied.get().addToUps(floor);
+					else
+						leastOccupied.get().addToDowns(floor);
+			}
+		}
+		
+			
+	
 	}
+
+	private Optional<IElevator> anyMovingDownAbove(int floor) {
+		return elevators
+				.stream()
+				.filter(elevator -> elevator.getState() == ElevatorState.MOVING_DOWN)
+				.filter(elevator -> elevator.getPresentFloor() > floor)
+				.sorted()
+				.findFirst();
+	}
+
+	private Optional<IElevator> leastOccupied() {
+		return elevators
+				.stream()
+				.sorted()
+				.findFirst();
+	}
+
+	private Optional<IElevator> optionalWaiting() {
+		return elevators
+				.stream()
+				.filter(elevator -> elevator.getState() == ElevatorState.WAITING)
+				.findFirst();
+	}
+
+	private Optional<IElevator> anyMovingUpBelow(int floor) {
+		return elevators
+				.stream()
+				.filter(elevator -> elevator.getState() == ElevatorState.MOVING_UP)
+				.filter(elevator -> elevator.getPresentFloor() < floor)
+				.sorted()
+				.findFirst();
+	}
+
+	
 
 	@Override
 	public void innerPickUp(int elevatorId, int floor) {
 		validateId(elevatorId);
-		elevators.get(elevatorId).addTarget(floor);
+		elevators.get(elevatorId).addToIns(floor);
 		
 	}
 	
-
-	private void validateId(int elevatorId) {
-		if(elevatorId < 0 || elevatorId > elevators.size())
-			throw new IllegalArgumentException("Elevator id needs to be between 0 and " + (elevators.size()-1));
-		
-	}
-
+	
 	private IElevator getLeastOccupied() {
 		if(elevators.size() == 1)
 			return elevators.get(0);
@@ -105,9 +182,48 @@ public class ElevatorSystem implements IElevatorSystem {
 		}
 		return locations;
 	}
-
-
 	
+	/**
+	 * VALIDATORS
+	 */
+	/**
+	 * Floor needs to be in range [0,maxFloor]
+	 * @param floor
+	 */
+	private void validateFloor(int floor) {
+		if(floor<0 || floor > this.maxFloor)
+			throw new IllegalArgumentException("Floor needs to be in range [" + 0 + ", " + this.maxFloor + "]");
+	}
+	/**
+	 * ElevatorId needs to be in range [0, amount_of_elevators]
+	 * @param elevatorId
+	 */
+	private void validateId(int elevatorId) {
+		if(elevatorId < 0 || elevatorId > elevators.size())
+			throw new IllegalArgumentException("Elevator id needs to be between 0 and " + (elevators.size()-1));
+		
+	}
+	/**
+	 * 
+	 * @param floor
+	 * @param up
+	 */
+	private void validateFirstOrLast(int floor, boolean up) {
+		if(up) {
+			if(floor >= maxFloor)
+				throw new IllegalArgumentException("You can't go up from last floor");
+		}else {
+			// goidn down
+			if(floor <=0)
+				throw new IllegalArgumentException("You can't go down from first floor");
+		}
+		
+	}
+
+	@Override
+	public ElevatorState getState(int elevatorId) {
+		return elevators.get(elevatorId).getState();
+	}
 
 
 	

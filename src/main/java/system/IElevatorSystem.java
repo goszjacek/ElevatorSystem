@@ -1,5 +1,7 @@
 package system;
 
+import elevator.ElevatorState;
+
 /**
  * Known implementation: {@link ElevatorSystem}
  *
@@ -42,4 +44,8 @@ public interface IElevatorSystem {
 	 * @return
 	 */
 	public Iterable<?> elevatorsLocations();
+
+	public ElevatorState getState(int elevatorId);
 }
+
+

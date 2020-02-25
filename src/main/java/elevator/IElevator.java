@@ -4,8 +4,13 @@ package elevator;
  *
  */
 public interface IElevator {
-	public void addTarget(int floor);
 	public void step();
 	public int getOccupation();
 	public int getPresentFloor();
+	public void clean();
+	public void addToIns(int floor);
+	public ElevatorState getState();
+	public void addToUps(int floor);
+	public void addToDowns(int floor);
+	public void setState(ElevatorState state);
 }
