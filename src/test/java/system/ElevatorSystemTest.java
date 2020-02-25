@@ -1,6 +1,10 @@
 package system;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -21,6 +25,10 @@ class ElevatorSystemTest {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			@SuppressWarnings("unused")
 			IElevatorSystem es = new ElevatorSystem(0,0);
+		});
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			@SuppressWarnings("unused")
+			IElevatorSystem es = new ElevatorSystem(0,17);
 		});
 	}
 	
@@ -56,7 +64,8 @@ class ElevatorSystemTest {
 	}
 
 	/**
-	 * Tests with many elevators
+	 * Tests with two elevators
+	 * First come first served
 	 */
 	
 	@Test
@@ -100,5 +109,35 @@ class ElevatorSystemTest {
 		es.step();
 		assertEquals(es.getPresentFloor(1), 2);
 	}
+	
+	/**
+	 * Tests with three elevators
+	 */
+	@Test
+	void testWithInnerPickWithDirections() {
+		IElevatorSystem es = new ElevatorSystem(3, 3);
+		es.outerPickUp(1, false);
+		es.outerPickUp(2, true);
+		es.outerPickUp(3, false);
+		es.step();
+		assertIterableEquals(Arrays.asList(1,1,1), es.elevatorsLocations());
+		es.innerPickUp(0,  0);
+		es.step();
+		assertIterableEquals(Arrays.asList(0,2,2), es.elevatorsLocations());
+		es.innerPickUp(1, 3);
+		es.outerPickUp(2, true);
+		es.step();
+		assertIterableEquals(Arrays.asList(1,3,3), es.elevatorsLocations());
+		es.innerPickUp(2, 2);
+		es.step();
+		assertIterableEquals(Arrays.asList(2,3,2), es.elevatorsLocations());
+		
+		
+	}
+	
+	/**
+	 * Test with many elevators. Collect while moving. 
+	 */
+	
 	
 }

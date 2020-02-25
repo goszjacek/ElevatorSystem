@@ -40,6 +40,12 @@ public class ElevatorSystem implements IElevatorSystem {
 
 	@Override
 	public void outerPickUp(int floor) {
+		this.outerPickUp(floor, true);
+	}
+	
+
+	@Override
+	public void outerPickUp(int floor, boolean up) {
 		getLeastOccupied().addTarget(floor);
 	}
 
@@ -90,6 +96,16 @@ public class ElevatorSystem implements IElevatorSystem {
 	public int getPresentFloor(int elevatorId) {
 		return elevators.get(elevatorId).getPresentFloor();		
 	}
+
+	@Override
+	public Iterable<?> elevatorsLocations() {
+		List<Integer> locations = new ArrayList<Integer>();
+		for(IElevator e : elevators) {
+			locations.add(e.getPresentFloor());
+		}
+		return locations;
+	}
+
 
 	
 

@@ -1,15 +1,19 @@
 package system;
+
 /**
  * Known implementation: {@link ElevatorSystem}
  *
  */
 public interface IElevatorSystem {
+	
+	@Deprecated public void outerPickUp(int floor);
+	
 	/**
 	 * Pick up from a floor. 
 	 * TODO: Directions up and down. 
 	 * @param floor
 	 */
-	public void outerPickUp(int floor);
+	public void outerPickUp(int floor, boolean up);
 	
 	/**
 	 * Pick up inside of the specific elevator. No directions.
@@ -32,4 +36,10 @@ public interface IElevatorSystem {
 	 * @return
 	 */
 	int getPresentFloor(int elevatorId);
+
+	/**
+	 * Return where elevators are located. 
+	 * @return
+	 */
+	public Iterable<?> elevatorsLocations();
 }
