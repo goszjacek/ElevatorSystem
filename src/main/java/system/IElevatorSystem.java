@@ -26,7 +26,7 @@ public interface IElevatorSystem {
 	public void innerPickUp(int elevatorId, int floor);
 	
 	/**
-	 * Step of the simulation.
+	 * Simulates one step of the simulation.
 	 */
 	public void step(); 
 	
@@ -40,11 +40,17 @@ public interface IElevatorSystem {
 	int getPresentFloor(int elevatorId);
 
 	/**
-	 * Return where elevators are located. 
+	 * Return where elevators are located. Useful for testing. 
 	 * @return
 	 */
 	public Iterable<?> elevatorsLocations();
 
+	/**
+	 * Used for tests. 
+	 * Get state of specific elevator.
+	 * @param elevatorId
+	 * @return
+	 */
 	public ElevatorState getState(int elevatorId);
 }
 
