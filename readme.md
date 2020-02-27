@@ -13,7 +13,7 @@ Sadly there is still one problem in my implementation that was explained in the 
 
 # Other Notes
 
-PickUp methods of ElevatorsSystem return RuntimeException because in the target hardware there will be buttons enabling only legal operations. 
+PickUp methods of ElevatorsSystem throw RuntimeException because in the target hardware there will be buttons enabling only legal operations. 
 
 
 
